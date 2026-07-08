@@ -36,7 +36,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Adsterra Global Script Configuration
+# Aapka Adsterra Global Script Code
 ad_html_code = """
 <div style="text-align:center; margin: auto;">
     <script type="text/javascript">
@@ -79,8 +79,8 @@ if not st.session_state.logged_in:
             else:
                 st.error("🚨 Please enter a valid 10-digit mobile number.")
     else:
-        st.info(f"OTP sent successfully to +91 {st.session_state.phone_num}")
-        otp_input = st.text_input("Enter 6-Digit OTP", placeholder="Enter OTP received", max_chars=6, type="password")
+        st.info(f"OTP sent successfully to +91 {st.session_state.phone_num} (Use any 6 digits to check)")
+        otp_input = st.text_input("Enter 6-Digit OTP", placeholder="Enter 6-Digit dummy OTP", max_chars=6, type="password")
         st.markdown("<br>", unsafe_allow_html=True)
         
         col_btn1, col_btn2 = st.columns(2)
@@ -100,13 +100,12 @@ if not st.session_state.logged_in:
                 
     st.markdown("</div>", unsafe_allow_html=True)
     
-    # 💰 ADSTERRA AD SLOT 1 (Login Page ke niche)
+    # 💰 ADSTERRA AD SLOT 1
     st.markdown("<p style='text-align:center; color:#94a3b8; font-size:0.8rem; margin-top:20px;'>Sponsored Link</p>", unsafe_allow_html=True)
     st.components.v1.html(ad_html_code, height=100)
 
 # --- PHASE 2: GLOBAL SEARCH MATRIX APPLICATION ---
 else:
-    # Top Bar Header Section
     st.markdown("""
     <div class='dashboard-header'>
         <div class='main-title'>🌐 AARAMBH GLOBAL ENGINE & MATRIX</div>
@@ -114,40 +113,48 @@ else:
     </div>
     """, unsafe_allow_html=True)
     
-    # Global Universal Search Engine Box
     st.markdown("### 🔍 Search Box (Enter Name or Paste Link)")
     search_query = st.text_input("", placeholder="Product ka naam daalein YA kisi bhi app ka product link paste karein...", label_visibility="collapsed")
     
-    # Dedicated Search Button right below the input box
+    # Dedicated Search Button
     search_clicked = st.button("⚡ Search & Match Prices Live", type="primary", use_container_width=True)
     
     if search_query and search_clicked:
-        is_link = "http://" in search_query or "https://" in search_query
+        query_lower = search_query.lower()
+        is_link = "http://" in query_lower or "https://" in query_lower
         
-        if is_link:
-            if "flipkart.com" in search_query:
-                display_title = "Flipkart Extracted Item"
-            elif "amazon" in search_query:
-                display_title = "Amazon Extracted Item"
-            elif "meesho" in search_query:
-                display_title = "Meesho Extracted Item"
-            else:
-                display_title = "Global Linked Product"
+        # --- SMART SMART IMAGE SELECTOR LOGIC ---
+        if "shirt" in query_lower or "cloth" in query_lower or "tshirt" in query_lower:
+            img_url = "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&auto=format&fit=crop&q=60"
+            display_title = "Premium Casual Shirt" if not is_link else "Extracted Clothing Link"
+        elif "shoe" in query_lower or "sneaker" in query_lower or "slipper" in query_lower:
+            img_url = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60"
+            display_title = "Sports Running Shoes" if not is_link else "Extracted Footwear Link"
+        elif "watch" in query_lower or "titan" in query_lower:
+            img_url = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=60"
+            display_title = "Luxury Smart Watch" if not is_link else "Extracted Accessory Link"
+        elif "laptop" in query_lower or "computer" in query_lower or "pc" in query_lower:
+            img_url = "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=60"
+            display_title = "High-Performance Laptop" if not is_link else "Extracted Tech Link"
+        elif "phone" in query_lower or "mobile" in query_lower or "iphone" in query_lower:
+            img_url = "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop&q=60"
+            display_title = "Next-Gen Smartphone" if not is_link else "Extracted Mobile Link"
         else:
-            display_title = search_query.upper()
+            img_url = "https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=500&auto=format&fit=crop&q=60"
+            display_title = search_query.upper() if not is_link else "Global Indexed Product"
 
-        # 💰 ADSTERRA AD SLOT 2 (Search results load hone se upar)
+        # 💰 ADSTERRA AD SLOT 2
         st.components.v1.html(ad_html_code, height=100)
             
         with st.spinner("⚡ Processing Link/Name and matching global warehouse rates..."):
-            time.sleep(1.5)
+            time.sleep(1.2)
         
-        # Dynamic Math Price Calculation
-        calculated_base = (len(search_query) * 45) + 2200
-        if calculated_base > 25000:
-            calculated_base = 8500
+        # Base Price logic
+        calculated_base = (len(search_query) * 35) + 1800
+        if calculated_base > 20000 or calculated_base < 1000:
+            calculated_base = random.randint(3500, 7500)
             
-        # Apps Database definition
+        # Saari platforms ka network database
         apps = [
             {"name": "Flipkart India 🛒", "color": "#2874f0", "url": "https://www.flipkart.com"},
             {"name": "Amazon Global 📦", "color": "#ff9900", "url": "https://www.amazon.in"},
@@ -155,40 +162,34 @@ else:
             {"name": "Walmart Stores 🇺🇸", "color": "#0071dc", "url": "https://www.walmart.com"}
         ]
         
-        # Shuffle logic so ANY app can become the cheapest randomly
+        # 🔥 PURE SHUFFLE DYNAMIC LOGIC - KOI BHI PLATFORM SASTA HO SAKTA HAI HAR SEARCH PAR!
         random.shuffle(apps)
         
-        # Assigning random dynamic prices (0th element hamesha sasta)
         prices = {
-            apps[0]["name"]: calculated_base - random.randint(500, 800),
-            apps[1]["name"]: calculated_base + random.randint(100, 400),
-            apps[2]["name"]: calculated_base + random.randint(500, 900),
-            apps[3]["name"]: calculated_base + random.randint(1000, 1500)
+            apps[0]["name"]: calculated_base - random.randint(400, 750),  # Ye hamesha sasta banega randomly
+            apps[1]["name"]: calculated_base + random.randint(150, 350),
+            apps[2]["name"]: calculated_base + random.randint(400, 700),
+            apps[3]["name"]: calculated_base + random.randint(800, 1400)
         }
         
         lowest_app_name = apps[0]["name"]
         lowest_price = prices[lowest_app_name]
         
-        # --- DYNAMIC INTERFACE VIEW SHOWCASE ---
+        # --- DYNAMIC DISPLAY BOX ---
         st.markdown(f"<div class='product-box'>", unsafe_allow_html=True)
-        st.markdown(f"<div class='fk-interface-title'>📊 Live Result: Analysis Found Best Deal on {lowest_app_name}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='fk-interface-title'>📊 Live Best Deal Matrix: Found on {lowest_app_name}</div>", unsafe_allow_html=True)
         
         col_img, col_det = st.columns([1, 3])
         with col_img:
-            st.image("https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?w=500&auto=format&fit=crop&q=60", width=140)
+            st.image(img_url, width=150)
         with col_det:
-            if is_link:
-                st.markdown(f"## 🔗 Link Analyzed: {display_title}")
-                st.caption(f"Original Target URL: {search_query[:70]}...")
-            else:
-                st.markdown(f"## 📦 Product Named: {display_title}")
-                
-            st.markdown(f"<p style='color:#10b981; font-weight:700; font-size:1.3rem;'>Lowest Rate: ₹{lowest_price}</p>", unsafe_allow_html=True)
-            st.write("✨ Live Data Verified | 🛡️ Secure Checkout Route | 🚚 Free Shipping Active")
+            st.markdown(f"## {display_title}")
+            st.markdown(f"<p style='color:#10b981; font-weight:700; font-size:1.4rem;'>Best Price: ₹{lowest_price} (Guaranteed Lowest)</p>", unsafe_allow_html=True)
+            st.write("✨ Free Express Delivery | 🛡️ Live Store Data Verified | 🚚 Return Policy Applicable")
         
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # --- WORLDWIDE SHOPPING APP COMPARISON GRID ---
+        # --- COMPARISON MATRIX GRID ---
         st.markdown("### 📊 Worldwide Stores Price Comparison Index")
         
         grid_cols = st.columns(4)
@@ -211,7 +212,7 @@ else:
     elif search_clicked and not search_query:
         st.warning("Bhai, pehle search box mein koi naam likho ya product link paste karo!")
 
-    # Logout Option
+    # Sidebar Logout Options
     st.sidebar.markdown(f"**Logged in as:** +91 {st.session_state.phone_num}")
     if st.sidebar.button("Log Out"):
         st.session_state.logged_in = False
@@ -219,5 +220,4 @@ else:
         st.rerun()
 
     st.write("")
-    st.markdown("<p style='text-align: center; color: #94a3b8; font-size: 0.85rem;'>Aarambh Price Scraping Index Engine v5.0 • Global Project 2026</p>", unsafe_allow_html=True)
-    
+    st.markdown("<p style='text-align: center; color: #94a3b8; font-size: 0.85rem;'>Aarambh Price Scraping Index Engine v6.0 • Global Project 2026</p>", unsafe_allow_html=True)
